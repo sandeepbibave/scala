@@ -1,0 +1,18 @@
+System.setProperty("oracle.net.tns_admin",sys.env("TNS_ADMIN"));
+import java.sql.DriverManager
+import java.sql.Connection
+import org.apache.spark.sql.DataFrame
+object ReadPassword {
+  def getPassword(): DataFrame = {
+    print("Password> ")
+    val pw = scala.io.StdIn.readLine()
+    var connection:Connection = null
+    val dns = "@xxxxxxxx"
+    val Url = "jdbc:oracle:thin:" + sys.env("LOGNAME") + "/"+pw+dns
+    val DataFrame = spark.read.format("jdbc").option("url",Url).option("dbtable", "ADW.****").load()
+    return DataFrame
+  }
+}
+val df = ReadPassword.getPassword
+df
+df.show()
